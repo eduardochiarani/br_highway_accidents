@@ -83,3 +83,9 @@ A fonte de dados utilizada:
 
 - [Dados Abertos da PRF](https://www.gov.br/prf/pt-br/acesso-a-informacao/dados-abertos/dados-abertos-da-prf)
 - Os dados considerados foram os documentos em CSV de acidentes agrupados por ocorrência, dos anos 2021 a 2024.
+
+---
+## Processo de limpeza
+
+1. Na pasta data, execute o script ``data_cleaning.py``
+2. Verifique se o arquivo ``\data\processed\df_concat.csv`` foi criado

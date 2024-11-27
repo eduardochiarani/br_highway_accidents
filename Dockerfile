@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 8501
 
 # Comando para rodar a aplicação
-CMD ["streamlit", "run", "src/app.py", "--server.port=8501", "--server.enableCORS=false"]
+CMD ["streamlit", "run", "src/dashboard.py", "--server.port=8501", "--server.enableCORS=false"]
