@@ -9,3 +9,4 @@ st.set_page_config(
 )
 
 st.title('Bem vindos ao projeto!')
+st.write('Este é um projeto de exemplo para demonstrar o uso do Streamlit.')
