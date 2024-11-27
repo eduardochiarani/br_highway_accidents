@@ -1,10 +1,10 @@
 import pandas as pd
 
 # Leitura dataframes
-df1 = pd.read_csv("../../data/raw/2021.csv", sep=';', header=0, encoding='latin1')
-df2 = pd.read_csv("../../data/raw/2022.csv", sep=';', header=0, encoding='latin1')
-df3 = pd.read_csv("../../data/raw/2023.csv", sep=';', header=0, encoding='latin1')
-df4 = pd.read_csv("../../data/raw/2024.csv", sep=';', header=0, encoding='latin1')
+df1 = pd.read_csv("raw/2021.csv", sep=';', header=0, encoding='latin1')
+df2 = pd.read_csv("raw/2022.csv", sep=';', header=0, encoding='latin1')
+df3 = pd.read_csv("raw/2023.csv", sep=';', header=0, encoding='latin1')
+df4 = pd.read_csv("raw/2024.csv", sep=';', header=0, encoding='latin1')
 
 # Concatenar dataframes
 df_concat = pd.concat([df1, df2, df3, df4], axis=0, ignore_index=True)
@@ -25,4 +25,4 @@ df_concat['horario'] = df_concat['horario'].dt.time
 df_concat['br'] = df_concat['br'].astype('object')
 
 # Salvar dataframe em data/processed
-df_concat.to_csv("../../data/processed/df_concat.csv", index=False)
+df_concat.to_csv("processed/df_concat.csv", index=False)
