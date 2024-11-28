@@ -1,18 +1,27 @@
-# br_highway_accidents
-Análise exploratória e engenharia de atributos de dados de acidente de trânsito nas rodovias do Brasil.
+# 🚧🚧🚧 em desenvolvimento 🚧🚧🚧
 
 ---
 
 ## 📋 Sobre o Projeto
 
-> Este projeto tem como objetivo analisar dados abertos da PRF, referentes aos acidentes nos anos de 2021 à 2024, aplicando técnicas de analise de dados e ciência de dados para gerar insights a partir desses dados.
+> Este projeto tem como objetivo analisar dados abertos da PRF, referentes
+> aos acidentes nos anos de 2021 à 2024, aplicando técnicas de analise de
+> dados e ciência de dados para gerar insights a partir desses dados.  
+> Uma das análises realizadas, foi a de acidentes com vítimas devido a
+> ingestão de álcool, verificando o comportamento do fenômeno durante
+> os dias da semana e períodos do dia. Como resultados iniciais,
+> observa-se a alta frequência deste tipo de acidente entre sábado e
+> domingo, e durante a noite e madrugada.
 
 ---
 
 ## 🚀 Funcionalidades
 
 - Análise exploratória de dados
-- Geração de relatórios e visualizações
+- Engenharia de atributos
+- Geração de gráficos
+- Comportamento geográfico com mapas de localização e calor
+- Apresentação visual dos dados usando Streamlit
 
 ---
 
@@ -22,7 +31,7 @@ Análise exploratória e engenharia de atributos de dados de acidente de trânsi
 - **Gerenciadores de Dependências:** `pip`, `venv`
 - **Ferramentas:** 
   - Streamlit
-  - Pandas, NumPy, Matplotlib, Plotly, Seaborn
+  - Pandas, NumPy, Matplotlib, Plotly, Seaborn, Folium
 
 ---
 
@@ -36,6 +45,7 @@ br_highway_accidents/
 │   ├── pages/             # Várias páginas da aplicação
 │   │   ├── home.py        # Página inicial
 │   │   ├── analysis.py    # Página de análise
+│   │   ├── mapa.py        # Página com mapas
 │   │   └── dashboard.py   # Página de dashboard
 │   ├── components/        # Módulos e layouts reutilizáveis
 │   │   ├── sidebar.py     # Configuração da barra lateral
