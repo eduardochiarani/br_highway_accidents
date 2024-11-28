@@ -2,16 +2,39 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-# import seaborn as sns
 
 st.set_page_config(
-    page_title="Analytics",
+    page_title="Acidentes com vítimas causados por Ingestão de álcool",
     page_icon="📈",
     layout="centered",
     initial_sidebar_state="auto",
 )
 
-# Função para exibir o gráfico
+st.title('Acidentes com vítimas causados por Ingestão de álcool')
+st.markdown('> O objeto desta análise é investigar os acidentes de trânsito \
+            com vítimas devido à ingestão de bebida alcoólica nas rodovias \
+            federais do Brasil. Foram filtrados os registros de acidentes \
+            com vítimas e acidentes causados por ingestão de álcool, com isso, \
+            foram plotados em gráficos os dias e horários com maior frequência, \
+            sendo possível analisar tendências.')
+# st.write("### Amostra:")
+# st.table(df[df['acidentes_com_ing_alcool'] == 1].head(2))
+
+# Análise de dados de ingestão de alcool
+df = pd.read_csv('./data/processed/df_concat.csv')
+df['acidentes_com_ing_alcool'] = np.where(
+    ((df['feridos_leves'] > 0) | (df['feridos_graves'] > 0) | (df['mortos'] > 0)) & 
+    (df['causa_acidente'] == "Ingestão de álcool pelo condutor"), 1, 0)
+
+df['horario'] = pd.to_datetime(df['horario'], format='%H:%M:%S')
+df['periodo_dia'] = pd.cut(df['horario'].dt.hour,
+                           bins=[0, 6, 12, 18, 24],
+                           labels=['Madrugada', 'Manhã', 'Tarde', 'Noite'],
+                           include_lowest=True)
+df['periodo_dia'] = df['periodo_dia'].astype('object')
+
+
+# Gráficos
 def exibir_grafico(data, xlabel, ylabel, title):
     st.write("### Gráfico de Barras:")
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -24,28 +47,6 @@ def exibir_grafico(data, xlabel, ylabel, title):
     ax.set_facecolor((1, 1, 1, 0.05))
     fig.patch.set_alpha(0.02)
     st.pyplot(fig)
-
-# Conteúdo da página
-st.title('Análise de Dados')
-st.markdown('> O objeto de análise deste projeto foi o de acidentes de trânsito com vítimas devidos à ingestão de bebida alcoólica.\
-    Nesta página, temos várias análises quanto a .........')
-
-df = pd.read_csv('./data/processed/df_concat.csv')
-
-# TODO: onde colocar esses processamentos dos dados
-df['acidentes_com_ing_alcool'] = np.where(
-    ((df['feridos_leves'] > 0) | (df['feridos_graves'] > 0) | (df['mortos'] > 0)) & 
-    (df['causa_acidente'] == "Ingestão de álcool pelo condutor"), 1, 0)
-
-df['horario'] = pd.to_datetime(df['horario'], format='%H:%M:%S')
-df['periodo_dia'] = pd.cut(df['horario'].dt.hour,
-                           bins=[0, 6, 12, 18, 24],
-                           labels=['Madrugada', 'Manhã', 'Tarde', 'Noite'],
-                           include_lowest=True)
-df['periodo_dia'] = df['periodo_dia'].astype('object')
-
-st.write("### Amostra:")
-st.table(df[df['acidentes_com_ing_alcool'] == 1].head(2))
 
 ordem = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado']
 data = df[df['acidentes_com_ing_alcool'] == 1]['dia_semana'].value_counts().reindex(ordem, fill_value=0)
@@ -61,13 +62,12 @@ ylabel = ""
 title = ""
 exibir_grafico(data, xlabel, ylabel, title)
 
-
-
 # TODO: gráfico especifico
 #filtra dataframee agrupa os dados
 data = df[(df['acidentes_com_ing_alcool'] == 1)].groupby(['dia_semana', 'periodo_dia']).size().unstack()
 data = data.reindex(['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'])
 data = data.reindex(columns=['Noite', 'Tarde', 'Manhã', 'Madrugada'])
+
 cores = ['#007bff', '#34c759', '#f7dc6f', '#ffa07a']
 fig, axs = plt.subplots(figsize=(10, 6))
 data.plot(kind='bar', stacked=True, color=cores, ax=axs)
@@ -82,17 +82,3 @@ axs.set_facecolor((1, 1, 1, 0.05))
 fig.patch.set_alpha(0.02)
 st.write("### Gráfico de Barras:")
 st.pyplot(fig)
-
-
-# sns.scatterplot(
-#     data = data,
-#     x ='Dia-semana',
-#     y ='Frequência',
-#     ax = ax
-# )
-# st.pyplot(fig)
-
-# # Métricas resumidas
-# c1, c2 = st.columns(2)
-# c1.metric("Média", round(df['Valores'].mean(), 2))
-# c2.metric("Máximo", df['Valores'].max())
