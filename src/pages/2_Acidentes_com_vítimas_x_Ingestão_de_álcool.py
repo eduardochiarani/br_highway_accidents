@@ -13,12 +13,11 @@ st.set_page_config(
 st.title('Acidentes com vítimas causados por Ingestão de álcool')
 st.markdown('> O objeto desta análise é investigar os acidentes de trânsito \
             com vítimas devido à ingestão de bebida alcoólica nas rodovias \
-            federais do Brasil. Foram filtrados os registros de acidentes \
-            com vítimas e acidentes causados por ingestão de álcool, com isso, \
-            foram plotados em gráficos os dias e horários com maior frequência, \
-            sendo possível analisar tendências.')
-# st.write("### Amostra:")
-# st.table(df[df['acidentes_com_ing_alcool'] == 1].head(2))
+            federais do Brasil. Filtrados os registros de acidentes \
+            com vítimas e acidentes causados por ingestão de álcool, tem-se \
+            os quantitativos de acides, plotados nos \
+            gráficos os dias e horários com maior frequência, \
+            sendo possível analisar possíveis tendências.')
 
 # Análise de dados de ingestão de alcool
 df = pd.read_csv('./data/processed/df_concat.csv')
@@ -32,7 +31,6 @@ df['periodo_dia'] = pd.cut(df['horario'].dt.hour,
                            labels=['Madrugada', 'Manhã', 'Tarde', 'Noite'],
                            include_lowest=True)
 df['periodo_dia'] = df['periodo_dia'].astype('object')
-
 
 # Gráficos
 def exibir_grafico(data, xlabel, ylabel, title):
@@ -62,8 +60,6 @@ ylabel = ""
 title = ""
 exibir_grafico(data, xlabel, ylabel, title)
 
-# TODO: gráfico especifico
-#filtra dataframee agrupa os dados
 data = df[(df['acidentes_com_ing_alcool'] == 1)].groupby(['dia_semana', 'periodo_dia']).size().unstack()
 data = data.reindex(['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'])
 data = data.reindex(columns=['Noite', 'Tarde', 'Manhã', 'Madrugada'])
@@ -82,3 +78,5 @@ axs.set_facecolor((1, 1, 1, 0.05))
 fig.patch.set_alpha(0.02)
 st.write("### Gráfico de Barras:")
 st.pyplot(fig)
+
+st.markdown('> .')

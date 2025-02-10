@@ -13,9 +13,13 @@ st.set_page_config(
     initial_sidebar_state="auto",
 )
 
-st.title('Mapas de localização dos acidentes')
-st.markdown('> Partindo da análise de acidentes com vítimas causados por Ingestão de álcool nas rodovias federais do Brasil, os mapas de localização e calor, indicam a concentração geográfica do fenômeno por clusterização.')
-# Análise de dados de ingestão de alcool
+st.title('Mapas de Localização dos Acidentes')
+st.markdown('> Partindo da análise de acidentes com vítimas causados por Ingestão de álcool, o mapa de localização indica a quantidade concentrada do fenômeno nas regiões geográficas, com detalhes de cada acidente ao clicar sobre o mesmo.')
+
+defaults = ['PR'] 
+opcoes = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']
+estados_selecionados = st.multiselect("Selecione os Estados para Visualização ***(Observação: Quanto mais estados, maior necessidade de processamento)***", opcoes, default=defaults)
+
 df = pd.read_csv('./data/processed/df_concat.csv')
 df['acidentes_com_ing_alcool'] = np.where(
     ((df['feridos_leves'] > 0) | (df['feridos_graves'] > 0) | (df['mortos'] > 0)) & 
@@ -28,11 +32,8 @@ df['periodo_dia'] = pd.cut(df['horario'].dt.hour,
                            include_lowest=True)
 df['periodo_dia'] = df['periodo_dia'].astype('object')
 
-
 # Mapa
-# condicao SC e PR para reduzir dados exibidos no mapa
-condicao = ['PR']
-df2 = df.loc[(df['acidentes_com_ing_alcool'] == 1) & (df['uf'].isin(condicao))]
+df2 = df.loc[(df['acidentes_com_ing_alcool'] == 1) & (df['uf'].isin(estados_selecionados))]
 
 df2.loc[:, 'latitude'] = pd.to_numeric(df2['latitude'].str.replace(',', '.'))
 df2.loc[:, 'longitude'] = pd.to_numeric(df2['longitude'].str.replace(',', '.'))
@@ -41,24 +42,10 @@ map = Map(tiles="openstreetmap", control_scale=True)
 marker_cluster = MarkerCluster(
     options={
         "maxClusterRadius": 30,  # Aglomerado mais próximo, ajuste do raio de agrupamento
-        "spiderfyDistanceMultiplier": 1,  # Ajusta a distância para agrupar
+        "spiderfyDistanceMultiplier": 1,  # distância para agrupar
         "disableClusteringAtZoom": 10  # Desabilita o cluster em um nível de zoom maior
     }
 ).add_to(map)
-
-# icon_create_function = """\
-# function(cluster) {
-#     return L.divIcon({
-#         html: '<div style="background-color: rgba(255, 0, 0, 0.6); \
-#                          color: white; width: 30px; height: 30px; \
-#                          border-radius: 50%; text-align: center; \
-#                          line-height: 30px; font-weight: bold;">' + cluster.getChildCount() + '</div>',
-#         className: 'leaflet-div-icon',
-#         iconSize: new L.Point(0, 0),
-#         iconAnchor: [15, 15]
-#     });
-# }"""
-# marker_cluster = MarkerCluster(icon_create_function=icon_create_function).add_to(map)
 
 for index, row in df2.iterrows():
     CircleMarker(
@@ -91,13 +78,16 @@ st_folium(map, width=800, height=600)
 
 st.empty()
 
+st.title('Mapas de Calor da Localização dos Acidentes')
+st.markdown('> A representação visual indica a densidade dos acidentes em diferentes áreas geográficas. As cores mais frias indicam menos acidentes, enquanto para cores mais quentes, mais acidentes.')
+
 # Mapa de calor
 map_calor = Map(tiles="Cartodb dark_matter", control_scale=True)
 map_calor.fit_bounds([[lat_min, lon_min], [lat_max, lon_max]])
 HeatMap(
     df2[['latitude', 'longitude']].values,
-    radius=15,           # Ajuste o raio para reduzir a densidade
-    blur=15,             # Ajuste o nível de desfoque (quanto maior, mais suave será o gradiente de calor)
-    min_opacity=0.2      # Ajuste a opacidade mínima para tornar os pontos menos visíveis
+    radius=15,           # raio para reduzir a densidade
+    blur=15,             # nível de desfoque (quanto maior, mais suave será o gradiente de calor)
+    min_opacity=0.2      # opacidade mínima para tornar os pontos menos visíveis
 ).add_to(map_calor)
 st_folium(map_calor, width=800, height=600)

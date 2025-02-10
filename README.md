@@ -1,4 +1,3 @@
-# 🚧🚧🚧 em desenvolvimento 🚧🚧🚧
 
 ---
 
@@ -17,10 +16,9 @@
 
 ## 🚀 Funcionalidades
 
-- Análise exploratória de dados
-- Engenharia de atributos
+- Análise exploratória de dados e Engenharia de atributos
 - Geração de gráficos
-- Comportamento geográfico com mapas de localização e calor
+- Comportamento geográfico com Mapas de Localização e Calor
 - Apresentação visual dos dados usando Streamlit
 
 ---
@@ -30,61 +28,39 @@
 - **Linguagem:** Python 3.x
 - **Gerenciadores de Dependências:** `pip`, `venv`
 - **Ferramentas:** 
-  - Streamlit
-  - Pandas, NumPy, Matplotlib, Plotly, Seaborn, Folium
-
----
-
-## 📂 Estrutura do Projeto
-
-```plaintext
-
-br_highway_accidents/ 
-├── src/                   # Código-fonte principal
-│   ├── app.py             # Arquivo principal do Streamlit
-│   ├── pages/             # Várias páginas da aplicação
-│   │   ├── home.py        # Página inicial
-│   │   ├── analysis.py    # Página de análise
-│   │   ├── mapa.py        # Página com mapas
-│   │   └── dashboard.py   # Página de dashboard
-│   ├── components/        # Módulos e layouts reutilizáveis
-│   │   ├── sidebar.py     # Configuração da barra lateral
-│   │   └── charts.py      # Funções para geração de gráficos
-│   ├── utils/             # Funções auxiliares e lógica do negócio
-│   │   ├── data_loader.py # Funções para carregar dados
-│   │   └── plot_utils.py  # Funções para criação de gráficos
-│   └── config.py          # Configurações gerais da aplicação
-├── data/                  # Dados utilizados pela aplicação
-│   ├── raw/               # Dados brutos
-│   ├── processed/         # Dados processados
-│   └── sample.csv         # Exemplo de dados
-├── assets/                # Arquivos estáticos (imagens, CSS, etc.)
-│   ├── styles.css         # Estilos personalizados
-│   └── logo.png           # Imagens ou logos
-├── tests/                 # Testes automatizados
-│   ├── test_app.py        # Testes para a aplicação principal
-│   └── test_utils.py      # Testes para funções auxiliares
-├── requirements.txt       # Dependências do projeto
-├── setup.sh               # Script de configuração inicial (opcional)
-├── Dockerfile             # Arquivo Docker para containerização
-├── .env.example           # Arquivo de exemplo para variáveis de ambiente
-└── README.md              # Documentação do projeto
-
-```
+  - Streamlit, Pandas, Matplotlib, Plotly, Folium
 
 ---
 ## Configurando o ambiente
 
-1. Instale o Python 3.x
+- Docker 🚧 em desenvolvimento 🚧
+- Configuração virtual environment:
+
+1. Instale o Python > 3.12
     - [Guia para instalação](https://medium.com/@nara.guimaraes/guia-de-instala%C3%A7%C3%A3o-do-python-em-diferentes-plataformas-10ea027c1869) (Win, Linux e MacOS)
 
-    - Verfique a instalação 
-        ```bash
-        python --version
-        ```
+    - No terminal, verfique a instalação digitando 
+    ```bash
+    python --version
+    ```
 
-2. Gerênciador de ambientes virtuais
-    - Recomendamos o uso de venv ou conda para isolar as dependências do projeto.
+2. Instalação de ambiente virtual e dependências do projeto:
+    - Navegue até o diretório do projeto ou de sua escolha
+    ```
+    cd <caminho-do-diretorio-de-sua-escolha>
+    ```
+    - Crie o ambiente virtual
+    ```
+    python -m venv venv
+    ```
+    - Ative o ambiente virtual
+    ```
+    source venv/scripts/activate
+    ```
+    - E instale as dependências usando o arquivo requirements do projeto
+    ```
+    pipenv install -r requirements.txt
+    ```
 
 ---
 ## Obtendo a base de dados
@@ -97,5 +73,42 @@ A fonte de dados utilizada:
 ---
 ## Processo de limpeza
 
-1. Na pasta data, execute o script ``data_cleaning.py``
+1. Na pasta data, execute o script
+    ```
+    data_cleaning.py
+    ```
 2. Verifique se o arquivo ``\data\processed\df_concat.csv`` foi criado
+
+---
+
+## Acessando Streamlit
+
+1. Para visualização dos resultados no Streamlit, no diretório do projeto e com o ambiente virtual venv ativo , digite:
+    ```
+    streamlit run src/Inicio.py
+    ```
+
+---
+
+## 📂 Estrutura do Projeto
+
+```plaintext
+
+br_highway_accidents/ 
+├── src/                   
+│   ├── Inicio.py          # Arquivo de inicialização do Streamlit
+│   └── pages/             
+│       ├── 1_             # Página de revisão do dataset
+│       ├── 2_             # Análise de acidentes com vítimas e ingestão de álcool
+│       └── 3_             # Mapas com localização da ocorrência e densidade dos acidentes
+│
+├── data/                  # Dados utilizados pela aplicação
+│   ├── raw/               # Dados brutos
+│   ├── processed/         # Dados processados
+│   └── data_cleaning.py   # Limpeza dos dados
+│
+├── requirements.txt       # Dependências do projeto
+├── Dockerfile             # Arquivo Docker para containerização
+└── README.md              # Documentação do projeto
+
+```
